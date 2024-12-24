@@ -1,4 +1,4 @@
-<a href="https://docs.resynced.design/" align="center">
+<a href="https://docs.resynced.design/discord-go-bot/introduction" align="center">
     <img src="https://r2.resynced.design/cdn/01JFT00BNQ2R8K4DSVNZKY0R4H.png" align="center" />
 </a>
 
@@ -8,7 +8,7 @@
 
 ---
 
-Welcome to the **Open-Source Discord Go Bot Template**! This project is built using **Go** and comes with everything you need to get started on building your own Go powered discord bot. For a more detailed breakdown look at our **[Documentation.](https://docs.resynced.design/)**
+Welcome to the **Open-Source Discord Go Bot Template**! This project is built using **Go** and comes with everything you need to get started on building your own Go powered discord bot. For a more detailed breakdown look at our **[Documentation.](https://docs.resynced.design/discord-go-bot/introduction)**
 
 ---
 
