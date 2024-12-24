@@ -8,6 +8,7 @@ type Command struct {
 	Category                 string
 	Handler                  func(s *discordgo.Session, i *discordgo.InteractionCreate)
 	DefaultMemberPermissions *int64
+	Options                  []*discordgo.ApplicationCommandOption
 }
 
 var (

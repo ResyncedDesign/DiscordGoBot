@@ -65,6 +65,7 @@ func RegisterSlashCommands(s *discordgo.Session) error {
 			Name:                     cmd.Name,
 			Description:              cmd.Description,
 			DefaultMemberPermissions: cmd.DefaultMemberPermissions,
+			Options:                  cmd.Options,
 		}
 
 		_, err := s.ApplicationCommandCreate(s.State.User.ID, guildID, command)
