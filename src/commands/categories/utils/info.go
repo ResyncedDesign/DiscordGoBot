@@ -33,7 +33,7 @@ func handleInfo(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		SetDescription("✨ Made by resynced.design").
 		AddField("⚙️ Go Version", info.GoVersion, true).
 		AddField("⏰ Uptime", config.FormattedUptime(), true).
-		SetImage("https://r2.resynced.design/cdn/01JFB8A2RZRMCHH6RBYP32R40B.png"). // TODO: Change to a more appropriate image
+		SetImage("https://r2.resynced.design/cdn/01JFT00BNQ2R8K4DSVNZKY0R4H.png").
 		SetColor(0x4e5454).MessageEmbed
 
 	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
