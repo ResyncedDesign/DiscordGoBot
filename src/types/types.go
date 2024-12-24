@@ -11,6 +11,15 @@ type Command struct {
 	Options                  []*discordgo.ApplicationCommandOption
 }
 
+type Event struct {
+    Name        string
+    Description string
+    Category    string
+    Type        string
+    Handler     interface{}
+}
+
 var (
 	RegisteredCommands = make(map[string]*Command)
+	RegisteredEvents   = make(map[string]*Event)
 )
