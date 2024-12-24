@@ -83,6 +83,7 @@ To start customizing, edit the files in the `src` directory. Key files include:
 
 -   **`main.go`** – Main entry point for the bot.
 -   **`src/commands/categories`** – Directory containing bot commands (add new commands here).
+-   **`src/events/categories`** – Directory containing bot events (add new events here).
 -   **`src/types`** – Directory containing custom types and interfaces.
 -   **`src/config`** – Directory containing configuration files and environment variables.
 
