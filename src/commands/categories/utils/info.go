@@ -48,6 +48,36 @@ func handleInfo(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			Embeds: []*discordgo.MessageEmbed{embed},
+			Components: []discordgo.MessageComponent{
+				discordgo.ActionsRow{
+					Components: []discordgo.MessageComponent{
+						discordgo.Button{
+							Emoji: &discordgo.ComponentEmoji{
+								Name: "🌐",
+							},
+							Label: "Website",
+							Style: discordgo.LinkButton,
+							URL:   "https://resynced.design",
+						},
+						discordgo.Button{
+							Emoji: &discordgo.ComponentEmoji{
+								Name: "🔗",
+							},
+							Label: "Github",
+							Style: discordgo.LinkButton,
+							URL:   "https://github.com/ResyncedDesign",
+						},
+						discordgo.Button{
+							Emoji: &discordgo.ComponentEmoji{
+								Name: "📜",
+							},
+							Label: "Documentation",
+							Style: discordgo.LinkButton,
+							URL:   "https://docs.resynced.design/discord-go-bot/introduction",
+						},
+					},
+				},
+			},
 		},
 	})
 	if err != nil {
