@@ -18,6 +18,7 @@ func init() {
 		Category:                 "utils",
 		Handler:                  handleInfo,
 		DefaultMemberPermissions: &permission,
+		Global:                   true,
 	}
 }
 

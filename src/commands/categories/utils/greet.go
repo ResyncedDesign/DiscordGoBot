@@ -24,6 +24,7 @@ func init() {
 				Required:    true,
 			},
 		},
+		Global: false,
 	}
 }
 

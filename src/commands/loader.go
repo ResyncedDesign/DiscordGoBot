@@ -29,12 +29,26 @@ func DeleteAllCommands(s *discordgo.Session) error {
 		return err
 	}
 
-	log.Printf("Deleting %d commands\n", len(commands))
+	log.Printf("Deleting %d guild commands\n", len(commands))
 
 	for _, cmd := range commands {
 		err := s.ApplicationCommandDelete(s.State.User.ID, guildID, cmd.ID)
 		if err != nil {
 			log.Printf("Failed to delete command %s: %v", cmd.ID, err)
+		}
+	}
+
+	globalCommands, err := s.ApplicationCommands(s.State.User.ID, "")
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Deleting %d global commands\n", len(globalCommands))
+
+	for _, cmd := range globalCommands {
+		err := s.ApplicationCommandDelete(s.State.User.ID, "", cmd.ID)
+		if err != nil {
+			log.Printf("Failed to delete global command %s: %v", cmd.ID, err)
 		}
 	}
 
@@ -68,11 +82,20 @@ func RegisterSlashCommands(s *discordgo.Session) error {
 			Options:                  cmd.Options,
 		}
 
+		if cmd.Global {
+			_, err := s.ApplicationCommandCreate(s.State.User.ID, "", command)
+			if err != nil {
+				return fmt.Errorf("error registering command %s: %w", cmd.Name, err)
+			}
+			log.Printf("Registered slash command: /%s (Category: %s, Global: %v)", cmd.Name, cmd.Category, cmd.Global)
+			continue
+		}
+
 		_, err := s.ApplicationCommandCreate(s.State.User.ID, guildID, command)
 		if err != nil {
 			return fmt.Errorf("error registering command %s: %w", cmd.Name, err)
 		}
-		log.Printf("Registered slash command: /%s (Category: %s)", cmd.Name, cmd.Category)
+		log.Printf("Registered slash command: /%s (Category: %s, Global: %v)", cmd.Name, cmd.Category, cmd.Global)
 	}
 	return nil
 }
