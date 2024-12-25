@@ -3,6 +3,7 @@ package utils
 import (
 	"DiscordGoBot/src/config"
 	"DiscordGoBot/src/types"
+	"DiscordGoBot/src/utils"
 	"fmt"
 	"log"
 	"runtime/debug"
@@ -29,25 +30,11 @@ func handleInfo(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
-	var allGuilds []*discordgo.UserGuild
-	lastID := ""
-	for {
-		guilds, err := s.UserGuilds(200, "", lastID, false)
-		if err != nil {
-			log.Printf("Failed to get guild count: %v", err)
-			return
-		}
-
-		allGuilds = append(allGuilds, guilds...)
-
-		if len(guilds) < 200 {
-			break
-		}
-
-		lastID = guilds[len(guilds)-1].ID
+	totalGuilds, err := utils.GetGuildCount(s)
+	if err != nil {
+		log.Printf("Failed to get guild count: %v", err)
+		return
 	}
-
-	totalGuilds := len(allGuilds)
 
 	embed := types.NewEmbed().
 		SetTitle("✨ Made by resynced.design").
@@ -57,7 +44,7 @@ func handleInfo(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		SetImage("https://r2.resynced.design/cdn/01JFT00BNQ2R8K4DSVNZKY0R4H.png").
 		SetColor(0x4e5454).MessageEmbed
 
-	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			Embeds: []*discordgo.MessageEmbed{embed},
