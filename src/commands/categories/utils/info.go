@@ -29,11 +29,31 @@ func handleInfo(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
+	var allGuilds []*discordgo.UserGuild
+	lastID := ""
+	for {
+		guilds, err := s.UserGuilds(200, "", lastID, false)
+		if err != nil {
+			log.Printf("Failed to get guild count: %v", err)
+			return
+		}
+
+		allGuilds = append(allGuilds, guilds...)
+
+		if len(guilds) < 200 {
+			break
+		}
+
+		lastID = guilds[len(guilds)-1].ID
+	}
+
+	totalGuilds := len(allGuilds)
+
 	embed := types.NewEmbed().
-		SetTitle("Bot Information").
-		SetDescription("✨ Made by resynced.design").
+		SetTitle("✨ Made by resynced.design").
 		AddField("⚙️ Go Version", info.GoVersion, true).
 		AddField("⏰ Uptime", config.FormattedUptime(), true).
+		AddField("🏰 Guild Count", fmt.Sprintf("%d", totalGuilds), true).
 		SetImage("https://r2.resynced.design/cdn/01JFT00BNQ2R8K4DSVNZKY0R4H.png").
 		SetColor(0x4e5454).MessageEmbed
 
