@@ -7,6 +7,7 @@ type Command struct {
 	Description              string
 	Category                 string
 	Handler                  func(s *discordgo.Session, i *discordgo.InteractionCreate)
+	Modal                    *Modal
 	DefaultMemberPermissions *int64
 	Options                  []*discordgo.ApplicationCommandOption
 	Global                   bool // Whether the command should be registered globally or only in your guild
@@ -18,6 +19,13 @@ type Event struct {
 	Category    string
 	Type        string
 	Handler     interface{}
+}
+
+type Modal struct {
+	ID         string
+	Title      string
+	Components []discordgo.MessageComponent
+	Handler    func(s *discordgo.Session, i *discordgo.InteractionCreate)
 }
 
 var (

@@ -2,6 +2,7 @@ package events
 
 import (
 	_ "DiscordGoBot/src/events/categories/core"
+	_ "DiscordGoBot/src/events/categories/interactions"
 	_ "DiscordGoBot/src/events/categories/messages"
 	"DiscordGoBot/src/types"
 	"fmt"

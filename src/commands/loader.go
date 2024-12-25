@@ -1,11 +1,13 @@
 package commands
 
 import (
+	_ "DiscordGoBot/src/commands/categories/modals"
 	_ "DiscordGoBot/src/commands/categories/utils"
 	"DiscordGoBot/src/types"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -57,13 +59,36 @@ func DeleteAllCommands(s *discordgo.Session) error {
 
 func RegisterCommandHandlers(s *discordgo.Session) {
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		if i.Type != discordgo.InteractionApplicationCommand {
-			return
-		}
+		switch i.Type {
+		case discordgo.InteractionApplicationCommand:
+			commandName := i.ApplicationCommandData().Name
+			if command, exists := types.RegisteredCommands[commandName]; exists {
+				if command.Modal != nil {
+					err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+						Type: discordgo.InteractionResponseModal,
+						Data: &discordgo.InteractionResponseData{
+							CustomID:   command.Modal.ID + "_" + i.Interaction.Member.User.ID,
+							Title:      command.Modal.Title,
+							Components: command.Modal.Components,
+						},
+					})
+					if err != nil {
+						log.Printf("Error showing modal: %v", err)
+					}
+				} else if command.Handler != nil {
+					command.Handler(s, i)
+				}
+			}
+		case discordgo.InteractionModalSubmit:
+			data := i.ModalSubmitData()
+			modalID := strings.Split(data.CustomID, "_")[0]
 
-		commandName := i.ApplicationCommandData().Name
-		if command, exists := types.RegisteredCommands[commandName]; exists {
-			command.Handler(s, i)
+			for _, cmd := range types.RegisteredCommands {
+				if cmd.Modal != nil && cmd.Modal.ID == modalID {
+					cmd.Modal.Handler(s, i)
+					return
+				}
+			}
 		}
 	})
 }
